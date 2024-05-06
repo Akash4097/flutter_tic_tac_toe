@@ -29,6 +29,10 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
     final size = MediaQuery.sizeOf(context);
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: ResponsiveWidget(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16),
