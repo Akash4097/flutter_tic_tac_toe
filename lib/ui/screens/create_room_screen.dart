@@ -16,12 +16,12 @@ class CreateRoomScreen extends StatefulWidget {
 }
 
 class _CreateRoomScreenState extends State<CreateRoomScreen> {
-  final _roomNameController = TextEditingController();
+  final _nameController = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
-    _roomNameController.dispose();
+    _nameController.dispose();
   }
 
   @override
@@ -38,8 +38,8 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
               const GlowText(text: "Create Room", fontSize: 72),
               Gap(size.height * .08),
               CustomTextField(
-                controller: _roomNameController,
-                hintText: "Enter room name...",
+                controller: _nameController,
+                hintText: "Enter nice name...",
               ),
               Gap(size.height * .04),
               CustomElevatedButton(
