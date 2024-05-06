@@ -22,7 +22,7 @@ class MainMenuScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CsustomElevatedButton(
+              CustomElevatedButton(
                 onTap: () => Navigator.push(
                   context,
                   CreateRoomScreen.route(),
@@ -30,7 +30,7 @@ class MainMenuScreen extends StatelessWidget {
                 text: "Create Room",
               ),
               const Gap(16),
-              CsustomElevatedButton(
+              CustomElevatedButton(
                 onTap: () => Navigator.push(
                   context,
                   JoinRoomScreen.route(),

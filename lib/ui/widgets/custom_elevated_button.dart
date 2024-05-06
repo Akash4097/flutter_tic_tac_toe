@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class CsustomElevatedButton extends StatelessWidget {
+class CustomElevatedButton extends StatelessWidget {
   final VoidCallback onTap;
   final String text;
-  const CsustomElevatedButton({
+  const CustomElevatedButton({
     super.key,
     required this.onTap,
     required this.text,
@@ -17,10 +17,14 @@ class CsustomElevatedButton extends StatelessWidget {
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
         fixedSize: Size(size.width, 52),
+        backgroundColor: Colors.blue,
       ),
       child: Text(
         text,
-        style: const TextStyle(fontSize: 18),
+        style: const TextStyle(
+          fontSize: 18,
+          color: Colors.white,
+        ),
       ),
     );
   }
