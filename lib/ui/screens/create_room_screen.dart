@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:tictactoe/ui/widgets/custom_elevated_button.dart';
-import 'package:tictactoe/ui/widgets/custom_text_field.dart';
-import 'package:tictactoe/ui/widgets/glow_text.dart';
-import 'package:tictactoe/utils/responsive.dart';
+
+import '../../resources/socket_methods.dart';
+import '../../utils/responsive.dart';
+import '../widgets/custom_elevated_button.dart';
+import '../widgets/custom_text_field.dart';
+import '../widgets/glow_text.dart';
 
 class CreateRoomScreen extends StatefulWidget {
   static route() => MaterialPageRoute(
@@ -17,6 +19,7 @@ class CreateRoomScreen extends StatefulWidget {
 
 class _CreateRoomScreenState extends State<CreateRoomScreen> {
   final _nameController = TextEditingController();
+  final _socketMethod = SocketMethods();
 
   @override
   void dispose() {
@@ -43,11 +46,13 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
               Gap(size.height * .08),
               CustomTextField(
                 controller: _nameController,
-                hintText: "Enter nice name...",
+                hintText: "Enter nick name...",
               ),
               Gap(size.height * .04),
               CustomElevatedButton(
-                onTap: () {},
+                onTap: () {
+                  _socketMethod.createRoom(_nameController.text.trim());
+                },
                 text: "Create Room",
               )
             ],
