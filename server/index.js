@@ -31,6 +31,7 @@ io.on("connection", (socket) => {
       room.turn = player
 
       console.log(`room: ${room}`)
+      
       room = await room.save()
       const roomId = room._id.toString()
 

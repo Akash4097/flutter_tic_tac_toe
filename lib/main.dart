@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tictactoe/utils/app_colors.dart';
 
+import 'providers/room_data_provider.dart';
 import 'ui/screens/main_menu_screen.dart';
 
 void main() {
@@ -12,12 +14,15 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: AppColor.bgColor,
+    return ChangeNotifierProvider(
+      create: (context) => RoomDataProvider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: AppColor.bgColor,
+        ),
+        home: const MainMenuScreen(),
       ),
-      home: const MainMenuScreen(),
     );
   }
 }
