@@ -3,7 +3,7 @@ const express = require("express")
 const http = require("http")
 const mongoose = require("mongoose")
 const dotenv = require("dotenv").config()
-const Room = require("./models/room")
+const Room = require("./models/room.js")
 
 // libs initial init...
 const app = express()
@@ -18,20 +18,21 @@ app.use(express.json())
 io.on("connection", (socket) => {
   console.log("SocketIO: connected!");
 
-  socket.on("createRoom", async ({ nickName }) => {
+  socket.on("createRoom", async ({nickname}) => {
     try {
       let room = new Room()
 
       let player = {
-        nickName,
-        socketId: socket.id,
+        socketID: socket.id,
+        nickName: nickname,
         charType: 'X',
       }
       room.players.push(player)
       room.turn = player
 
+      console.log(`room: ${room}`)
       room = await room.save()
-      const roomId = room._id.toSting()
+      const roomId = room._id.toString()
 
       socket.join(roomId)
 
