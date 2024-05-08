@@ -4,9 +4,11 @@ void showSnackBar(
   BuildContext context,
   String content,
 ) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(content),
-    ),
-  );
+  ScaffoldMessenger.of(context)
+    ..hideCurrentSnackBar()
+    ..showSnackBar(
+      SnackBar(
+        content: Text(content),
+      ),
+    );
 }

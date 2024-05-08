@@ -23,7 +23,7 @@ class SocketMethods {
   }
 
   void joinRoom(String nickname, String roomId) {
-    if (nickname.isNotEmpty) {
+    if (nickname.isNotEmpty && roomId.isNotEmpty) {
       _socketClient?.emit("joinRoom", {
         'nickname': nickname,
         'roomId': roomId,
@@ -45,6 +45,7 @@ class SocketMethods {
   }
 
   void joinRoomSuccessListener(BuildContext context) {
+    print("JoinRoomSuccess called in client");
     _socketClient?.on('joinRoomSuccess', (room) {
       Provider.of<RoomDataProvider>(context, listen: false)
           .updateRoomData(room);
@@ -53,8 +54,20 @@ class SocketMethods {
   }
 
   void errorOccurredListener(BuildContext context) {
+    print("ErrorOccurred called in client");
     _socketClient?.on('errorOccurred', (error) {
       showSnackBar(context, error);
+    });
+  }
+
+  void updatePlayersDataListener(BuildContext context) {
+    print("JoinRoomSuccess called in client");
+    _socketClient?.on('updatePlayers', (playersData) {
+      print("playersData $playersData");
+      Provider.of<RoomDataProvider>(context, listen: false)
+          .updateMainPlayerData(playersData[0]);
+      Provider.of<RoomDataProvider>(context, listen: false)
+          .updatejoineePlayerData(playersData[1]);
     });
   }
 }

@@ -12,6 +12,12 @@ class GameScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(
+      Provider.of<RoomDataProvider>(context).mainPlayer.toString(),
+    );
+    print(
+      Provider.of<RoomDataProvider>(context).joineePlayer.toString(),
+    );
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColor.bgColor,
