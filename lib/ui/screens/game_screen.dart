@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tictactoe/providers/room_data_provider.dart';
 import 'package:tictactoe/utils/app_colors.dart';
 
 class GameScreen extends StatelessWidget {
@@ -14,6 +16,11 @@ class GameScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColor.bgColor,
         elevation: 0.0,
+      ),
+      body: Center(
+        child: Text(
+          Provider.of<RoomDataProvider>(context).roomData.toString(),
+        ),
       ),
     );
   }

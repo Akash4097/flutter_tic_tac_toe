@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
+import '../../resources/socket_methods.dart';
 import '../../utils/responsive.dart';
 import '../widgets/custom_elevated_button.dart';
 import '../widgets/custom_text_field.dart';
@@ -20,6 +21,14 @@ class JoinRoomScreen extends StatefulWidget {
 class _JoinRoomScreenState extends State<JoinRoomScreen> {
   final _nameController = TextEditingController();
   final _gameIdController = TextEditingController();
+  final _socketMethods = SocketMethods();
+
+  @override
+  void initState() {
+    super.initState();
+    _socketMethods.joinRoomSuccessListener(context);
+    _socketMethods.errorOccurredListener(context);
+  }
 
   @override
   void dispose() {
@@ -51,12 +60,17 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
               ),
               Gap(size.height * .04),
               CustomTextField(
-                controller: _nameController,
+                controller: _gameIdController,
                 hintText: "Enter game id...",
               ),
               Gap(size.height * .04),
               CustomElevatedButton(
-                onTap: () {},
+                onTap: () {
+                  _socketMethods.joinRoom(
+                    _nameController.text.trim(),
+                    _gameIdController.text.trim(),
+                  );
+                },
                 text: "Join Room",
               )
             ],

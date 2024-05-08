@@ -18,7 +18,8 @@ app.use(express.json())
 io.on("connection", (socket) => {
   console.log("SocketIO: connected!");
 
-  socket.on("createRoom", async ({nickname}) => {
+  // CreateRoom Listeners
+  socket.on("createRoom", async ({ nickname }) => {
     try {
       let room = new Room()
 
@@ -31,7 +32,7 @@ io.on("connection", (socket) => {
       room.turn = player
 
       console.log(`room: ${room}`)
-      
+
       room = await room.save()
       const roomId = room._id.toString()
 
@@ -39,7 +40,40 @@ io.on("connection", (socket) => {
 
       io.to(roomId).emit("createRoomSuccess", room)
     } catch (error) {
-       console.log(`Error happen on createRoom(Server): ${error}`)
+      console.log(`Error happen on createRoom(Server): ${error}`)
+    }
+  })
+
+
+  // JoinRoom Listeners
+  socket.on("joinRoom", async ({ nickname, roomId }) => {
+    try {
+      if (!mongoose.isValidObjectId(roomId)) {
+        socket.emit("errorOccurred", "Please enter valid roomId")
+        return;
+      }
+
+      let room = await Room.findById(roomId)
+
+      if (room.isJoin) {
+        let player = {
+          socketID: socket.id,
+          nickName: nickname,
+          charType: 'O',
+        }
+        socket.join(roomId)
+        room.players.push(player)
+        room.isJoin = false
+        
+        room = await room.save()
+        io.to(roomId).emit("joinRoomSuccess", room)
+      } else {
+        socket.emit("errorOccurred", "Game is in progress, please try again later!")
+      }
+
+      io.to(roomId).emit("createRoomSuccess", room)
+    } catch (error) {
+      console.log(`Error happen on joinRoom(Server): ${error}`)
     }
   })
 })
