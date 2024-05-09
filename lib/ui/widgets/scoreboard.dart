@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tictactoe/resources/socket_methods.dart';
 
 import '../../providers/room_data_provider.dart';
 
@@ -9,7 +10,8 @@ class Scoreboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final roomDataProvider = Provider.of<RoomDataProvider>(context);
-
+    final currentUser =
+        roomDataProvider.mainPlayer.socketID == SocketMethods().socketClient.id;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
