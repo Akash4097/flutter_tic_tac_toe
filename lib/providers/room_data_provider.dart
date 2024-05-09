@@ -3,6 +3,9 @@ import 'package:tictactoe/data_models/player.dart';
 
 class RoomDataProvider extends ChangeNotifier {
   Map<String, dynamic> _roomData = {};
+  int _filledBoxes = 0;
+  final List<String> _displayElements = List.filled(9, '');
+
   Player _mainPlayer = Player(
     nickname: "",
     socketID: "",
@@ -20,6 +23,7 @@ class RoomDataProvider extends ChangeNotifier {
   Map<String, dynamic> get roomData => _roomData;
   Player get mainPlayer => _mainPlayer;
   Player get joineePlayer => _joineePlayer;
+  List<String> get displayElements => _displayElements;
 
   void updateRoomData(Map<String, dynamic> data) {
     _roomData = data;
@@ -33,6 +37,12 @@ class RoomDataProvider extends ChangeNotifier {
 
   void updatejoineePlayerData(Map<String, dynamic> playerData) {
     _joineePlayer = Player.fromMap(playerData);
+    notifyListeners();
+  }
+
+  void updateDisplayElement(int index, String choice) {
+    _displayElements[index] = choice;
+    _filledBoxes++;
     notifyListeners();
   }
 }

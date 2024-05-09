@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import 'package:tictactoe/utils/show_snackbar.dart';
 
 import '../providers/room_data_provider.dart';
@@ -8,6 +9,8 @@ import 'socket_io_client.dart';
 
 class SocketMethods {
   final _socketClient = SocketIOClient.instance.socket;
+
+  Socket get socketClient => _socketClient!;
 
   ///
   /// All Emitter
@@ -31,6 +34,15 @@ class SocketMethods {
     }
   }
 
+  void tappedGrid(int index, String roomId, List<String> displayElements) {
+    if (displayElements[index] == "") {
+      _socketClient?.emit("tap", {
+        'index': index,
+        'roomId': roomId,
+      });
+    }
+  }
+
   ///
   /// All Listeners
   ///
@@ -45,7 +57,6 @@ class SocketMethods {
   }
 
   void joinRoomSuccessListener(BuildContext context) {
-    print("JoinRoomSuccess called in client");
     _socketClient?.on('joinRoomSuccess', (room) {
       Provider.of<RoomDataProvider>(context, listen: false)
           .updateRoomData(room);
@@ -54,16 +65,13 @@ class SocketMethods {
   }
 
   void errorOccurredListener(BuildContext context) {
-    print("ErrorOccurred called in client");
     _socketClient?.on('errorOccurred', (error) {
       showSnackBar(context, error);
     });
   }
 
   void updatePlayersDataListener(BuildContext context) {
-    print("JoinRoomSuccess called in client");
     _socketClient?.on('updatePlayers', (playersData) {
-      print("playersData $playersData");
       Provider.of<RoomDataProvider>(context, listen: false)
           .updateMainPlayerData(playersData[0]);
       Provider.of<RoomDataProvider>(context, listen: false)
@@ -75,6 +83,16 @@ class SocketMethods {
     _socketClient?.on('updateRoom', (room) {
       Provider.of<RoomDataProvider>(context, listen: false)
           .updateRoomData(room);
+    });
+  }
+
+  void tappedListener(BuildContext context) {
+    _socketClient?.on('tapped', (data) {
+      print("tappedListener: $data");
+      final roomProvider =
+          Provider.of<RoomDataProvider>(context, listen: false);
+      roomProvider.updateDisplayElement(data['index'], data['choice']);
+      roomProvider.updateRoomData(data['room']);
     });
   }
 }
