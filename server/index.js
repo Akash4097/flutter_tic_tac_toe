@@ -69,6 +69,7 @@ io.on("connection", (socket) => {
 
         io.to(roomId).emit("joinRoomSuccess", room)
         io.to(roomId).emit("updatePlayers", room.players)
+        io.to(roomId).emit("updateRoom", room)
       } else {
         socket.emit("errorOccurred", "Game is in progress, please try again later!")
       }

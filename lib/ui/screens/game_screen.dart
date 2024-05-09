@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tictactoe/providers/room_data_provider.dart';
-import 'package:tictactoe/utils/app_colors.dart';
+import 'package:tictactoe/resources/socket_methods.dart';
 
-class GameScreen extends StatelessWidget {
+import '../widgets/waiting_lobby.dart';
+
+class GameScreen extends StatefulWidget {
   static route() => MaterialPageRoute(
         builder: (context) => const GameScreen(),
       );
@@ -11,23 +13,31 @@ class GameScreen extends StatelessWidget {
   const GameScreen({super.key});
 
   @override
+  State<GameScreen> createState() => _GameScreenState();
+}
+
+class _GameScreenState extends State<GameScreen> {
+  final _socketMethods = SocketMethods();
+
+  @override
+  void initState() {
+    super.initState();
+    _socketMethods.updateRoomListener(context);
+    _socketMethods.updatePlayersDataListener(context);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    print(
-      Provider.of<RoomDataProvider>(context).mainPlayer.toString(),
-    );
-    print(
-      Provider.of<RoomDataProvider>(context).joineePlayer.toString(),
-    );
+    final roomDataProvider = Provider.of<RoomDataProvider>(context);
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColor.bgColor,
-        elevation: 0.0,
-      ),
-      body: Center(
-        child: Text(
-          Provider.of<RoomDataProvider>(context).roomData.toString(),
-        ),
-      ),
+      body: roomDataProvider.roomData['isJoin']
+          ? const WaitingLobby()
+          : Center(
+              child: Text(
+                Provider.of<RoomDataProvider>(context).roomData.toString(),
+              ),
+            ),
     );
   }
 }
