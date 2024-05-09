@@ -31,7 +31,7 @@ io.on("connection", (socket) => {
       room.players.push(player)
       room.turn = player
 
-      console.log(`room: ${room}`)
+      console.log(`create room: ${room}`)
 
       room = await room.save()
       const roomId = room._id.toString()
@@ -54,7 +54,6 @@ io.on("connection", (socket) => {
       }
 
       let room = await Room.findById(roomId)
-
       if (room.isJoin) {
         let player = {
           socketID: socket.id,

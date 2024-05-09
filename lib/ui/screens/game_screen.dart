@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tictactoe/providers/room_data_provider.dart';
 import 'package:tictactoe/resources/socket_methods.dart';
+import 'package:tictactoe/ui/widgets/scoreboard.dart';
 
 import '../widgets/waiting_lobby.dart';
 
@@ -33,9 +34,9 @@ class _GameScreenState extends State<GameScreen> {
     return Scaffold(
       body: roomDataProvider.roomData['isJoin']
           ? const WaitingLobby()
-          : Center(
-              child: Text(
-                Provider.of<RoomDataProvider>(context).roomData.toString(),
+          : SafeArea(
+              child: Column(
+                children: [Scoreboard()],
               ),
             ),
     );
