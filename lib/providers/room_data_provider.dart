@@ -24,6 +24,7 @@ class RoomDataProvider extends ChangeNotifier {
   Player get mainPlayer => _mainPlayer;
   Player get joineePlayer => _joineePlayer;
   List<String> get displayElements => _displayElements;
+  int get filledBoxes => _filledBoxes;
 
   void updateRoomData(Map<String, dynamic> data) {
     _roomData = data;
@@ -43,6 +44,11 @@ class RoomDataProvider extends ChangeNotifier {
   void updateDisplayElement(int index, String choice) {
     _displayElements[index] = choice;
     _filledBoxes++;
+    notifyListeners();
+  }
+
+  void setFilledBoxesToZero() {
+    _filledBoxes = 0;
     notifyListeners();
   }
 }
