@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tictactoe/providers/room_data_provider.dart';
-import 'package:tictactoe/resources/socket_methods.dart';
-import 'package:tictactoe/ui/widgets/scoreboard.dart';
-import 'package:tictactoe/ui/widgets/tictactoe_board.dart';
 
+import '../../providers/room_data_provider.dart';
+import '../../resources/socket_methods.dart';
+import '../widgets/scoreboard.dart';
+import '../widgets/tictactoe_board.dart';
 import '../widgets/waiting_lobby.dart';
 
 class GameScreen extends StatefulWidget {
@@ -26,6 +26,8 @@ class _GameScreenState extends State<GameScreen> {
     super.initState();
     _socketMethods.updateRoomListener(context);
     _socketMethods.updatePlayersDataListener(context);
+    _socketMethods.pointsIncreaseListener(context);
+    _socketMethods.endGameListener(context);
   }
 
   @override

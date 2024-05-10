@@ -73,7 +73,7 @@ io.on("connection", (socket) => {
         socket.emit("errorOccurred", "Game is in progress, please try again later!")
       }
     } catch (error) {
-      console.log(`Error happen on joinRoom(Server): ${error}`)
+      console.log(`Error happen on joinRoom listener(Server): ${error}`)
     }
   })
 
@@ -100,7 +100,28 @@ io.on("connection", (socket) => {
       }
       )
     } catch (error) {
-      console.log(`Error happen on tap(Server): ${error}`)
+      console.log(`Error happen on tap listener(Server): ${error}`)
+    }
+  })
+
+  // winner listener
+  socket.on("winner", async ({ winnerSocketId, roomId }) => {
+    try {
+      let room = await Room.findById(roomId)
+
+      let player = room.players.find((player) => player.socketID == winnerSocketId)
+
+      player.points += 1
+
+      room = await room.save()
+
+      if (player.points >= room.maxRounds) {
+        io.to(roomId).emit("endGame", player)
+      } else {
+        io.to(roomId).emit("pointsIncrease", player)
+      }
+    } catch (error) {
+      console.log(`Error happen on winner listener(Server): ${error}`)
     }
   })
 })
